@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=
 DEPS=*.h
-OBJ=ppos-core-aux.o pingpong-contab-prio.o
+OBJ=ppos-core-aux.o pingpong-preempcao.o -lm
 LIB=libppos_static.a
 
 %.o: %.c $(DEPS)
