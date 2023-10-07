@@ -10,7 +10,7 @@
 // Coloque aqui as suas modificações, p.ex. includes, defines variáveis, 
 // estruturas e funções
 #define SYSTEM_INIT 1
-#define SYSTEM_PERIOD 1
+#define SYSTEM_PERIOD 1000
 #define MAX_TICKS 20
 
 // estrutura que define um tratador de sinal (deve ser global ou static)
@@ -22,22 +22,12 @@ int quantum = MAX_TICKS;
 
 // ****************************************************************************
 
-
-//dispatcher nao deve ser preeptado
-//verificar se a tarefa corrente é de usuário ou de sistema
-
-// temporizador a cada 1 milisegundo
-//disparo tratado por uma rotina de tick
-//cada tarefa recebem um quantum de 20 tickes
-//o quantum da tarefa selecionada deve ser decrementada - tarefa de usuário
-// contador igual a zero a tarefa em execução volta pra fila de prontas e controle ao dispatcher
-
-
-
 static void tick (int signum) {
     if(taskExec != taskDisp)
         quantum--;
     systemTime++;
+    if(taskExec != NULL)
+        taskExec->running_time = taskExec->running_time + 1;
 
     if (quantum <= 0 && taskExec != taskDisp) {       
         task_yield();
@@ -46,48 +36,6 @@ static void tick (int signum) {
 
     return;
 }
-
-    /*int quantum = MAX_TICKS;
-
-    if (taskExec != NULL) {
-        taskExec->total_time--;
-        quantum--;
-        systemTime++;
-
-        if (taskExec->total_time == 0 || quantum == 0) {
-            printf("Tarefa %d concluída ou quantum esgotado.\n", taskExec);
-            free(taskExec);
-            taskExec = NULL;
-            quantum = MAX_TICKS;
-        }
-    }
-
-    if (taskExec == NULL && readyQueue != NULL) {
-        taskExec = readyQueue;
-        readyQueue = readyQueue->next;
-        taskExec->next = NULL;
-        printf("Iniciando a tarefa %d.\n", taskExec->id);
-    }
-}*/
-
-/*if (taskExec != NULL) {
-        taskExec->burst_time--;
-        quantum--;
-
-        if (taskExec->burst_time == 0 || quantum == 0) {
-            printf("Tarefa %d concluída ou quantum esgotado.\n", taskExec->id);
-            free(taskExec);
-            taskExec = NULL;
-            quantum = MAX_TICKS;
-        }
-    }
-
-    if (taskExec == NULL && readyQueue != NULL) {
-        taskExec = readyQueue;
-        readyQueue = readyQueue->next;
-        taskExec->next = NULL;
-        printf("Iniciando a tarefa %d.\n", taskExec->id);
-    }*/
 
 void before_ppos_init () {
     action.sa_handler = tick;
@@ -118,19 +66,9 @@ void before_ppos_init () {
     #endif
 }
 
-/*void before_ppos_init () {
-    // put your customization here
-    initTime = clock();
-    systemTime = 0;
-    printf("\nInicio em tempo = %u ms\n", systemTime);
-#ifdef DEBUG
-    printf("\ninit - BEFORE");
-#endif
-}*/
-
 void after_ppos_init () {
     task_set_eet(taskDisp,99999);
-    task_set_eet(taskMain,5000);
+    task_set_eet(taskMain,99999);
     // put your customization here
 #ifdef DEBUG
     printf("\ninit - AFTER");
@@ -149,9 +87,7 @@ void before_task_create (task_t *task ) {
 void after_task_create (task_t *task ) {
     // put your customization here
     
-    //printf("Tarefa %d criada em tempo = %u ms\n",task->id, systemTime/1000);
     quantum = MAX_TICKS;
-    task->initial_total_time = systemTime;
 
 #ifdef DEBUG
     printf("\ntask_create - AFTER - [%d]", task->id);
@@ -160,20 +96,16 @@ void after_task_create (task_t *task ) {
 
 void before_task_exit () {
     // put your customization here
-    
-    taskExec->processor_time = taskExec->processor_time + systemTime - taskExec->initial_processor_time;
     taskExec->total_time = systemTime - taskExec->initial_total_time;
     task_set_eet(taskExec,taskExec->eet);;
-    printf("Task %d exit: execution time %u ms, processor time %u ms, %d activations\n",taskExec->id,taskExec->total_time,taskExec->processor_time,taskExec->activations);
+    printf("\nTask %d exit: execution time %u ms, processor time %u ms, %d activations\n",taskExec->id,taskExec->total_time,taskExec->running_time,taskExec->activations);
 #ifdef DEBUG
     printf("\ntask_exit - BEFORE - [%d]", taskExec->id);
 #endif
 }
 
 void after_task_exit () {
-    
     // put your customization here
-    
 #ifdef DEBUG
     printf("\ntask_exit - AFTER- [%d]", taskExec->id);
 #endif
@@ -181,8 +113,6 @@ void after_task_exit () {
 
 void before_task_switch ( task_t *task ) {
     // put your customization here
-    //printf("Tarefa %d trocando no tempo (FORA DO IF) = %u ms\n",task->id, systemTime/1000);
-    
 #ifdef DEBUG
     printf("\ntask_switch - BEFORE - [%d -> %d]", taskExec->id, task->id);
 #endif
@@ -190,9 +120,7 @@ void before_task_switch ( task_t *task ) {
 
 void after_task_switch ( task_t *task ) {
     // put your customization here
-    //printf("Tarefa %d TROCADA no tempo = %u ms\n",task->id, systemTime/1000);
     quantum = MAX_TICKS;
-    task->initial_processor_time = systemTime;
 #ifdef DEBUG
     printf("\ntask_switch - AFTER - [%d -> %d]", taskExec->id, task->id);
 #endif
@@ -200,22 +128,16 @@ void after_task_switch ( task_t *task ) {
 
 void before_task_yield () {
     // put your customization here
-    
-    //printf("Tarefa %d yield no tempo = %u ms\n",taskExec->id, systemTime/1000);
     if(taskExec != NULL)
     {
-        //printf("Tarefa %d trocando no tempo (DENTRO DO IF) = %u ms\n",task->id, systemTime/1000);
-        taskExec->processor_time = taskExec->processor_time + systemTime - taskExec->initial_processor_time;
         taskExec->total_time = systemTime - taskExec->initial_total_time;
         task_set_eet(taskExec,taskExec->eet);
-        taskExec->activations = taskExec->activations + 1;
     }
 #ifdef DEBUG
     printf("\ntask_yield - BEFORE - [%d]", taskExec->id);
 #endif
 }
 void after_task_yield () {
-    
     // put your customization here
 #ifdef DEBUG
     printf("\ntask_yield - AFTER - [%d]", taskExec->id);
@@ -225,15 +147,12 @@ void after_task_yield () {
 
 void before_task_suspend( task_t *task ) {
     // put your customization here
-    
-    //printf("Tarefa %d suspensa no tempo = %u ms\n",task->id, systemTime/1000);
 #ifdef DEBUG
     printf("\ntask_suspend - BEFORE - [%d]", task->id);
 #endif
 }
 
 void after_task_suspend( task_t *task ) {
-    
     // put your customization here
 #ifdef DEBUG
     printf("\ntask_suspend - AFTER - [%d]", task->id);
@@ -242,10 +161,6 @@ void after_task_suspend( task_t *task ) {
 
 void before_task_resume(task_t *task) {
     // put your customization here
-    
-    //printf("Tarefa %d executando no tempo = %u ms\n",task->id, systemTime/1000);
-    task->initial_processor_time = systemTime;
-    //printf("Tarefa %d resume no tempo = %u ms\n",task->id, systemTime/1000);
 #ifdef DEBUG
     printf("\ntask_resume - BEFORE - [%d]", task->id);
 #endif
@@ -261,15 +176,12 @@ void after_task_resume(task_t *task) {
 
 void before_task_sleep () {
     // put your customization here
-    
-    //printf("Tarefa %d dormiu no tempo = %u ms\n",taskExec->id, systemTime/1000);
 #ifdef DEBUG
     printf("\ntask_sleep - BEFORE - [%d]", taskExec->id);
 #endif
 }
 
 void after_task_sleep () {
-    
     // put your customization here
 #ifdef DEBUG
     printf("\ntask_sleep - AFTER - [%d]", taskExec->id);
@@ -278,7 +190,6 @@ void after_task_sleep () {
 
 int before_task_join (task_t *task) {
     // put your customization here
-    
 #ifdef DEBUG
     printf("\ntask_join - BEFORE - [%d]", taskExec->id);
 #endif
@@ -286,14 +197,12 @@ int before_task_join (task_t *task) {
 }
 
 int after_task_join (task_t *task) {
-    
     // put your customization here
 #ifdef DEBUG
     printf("\ntask_join - AFTER - [%d]", taskExec->id);
 #endif
     return 0;
 }
-
 
 int before_sem_create (semaphore_t *s, int value) {
     // put your customization here
@@ -558,7 +467,7 @@ task_t * scheduler() {
         task_t* shortest_task = initial_task;
         task_t* task = initial_task;
         unsigned int shortest_time = shortest_task->ret;
-        if(task->next == NULL || task->id < 2)
+        if(task->next == NULL)
             return task;
         task = task->next;
         while(task != initial_task)
@@ -570,6 +479,7 @@ task_t * scheduler() {
             }
             task = task->next;
         }
+        shortest_task->activations = shortest_task->activations + 1;
         return shortest_task;
     }
     return NULL;
@@ -584,7 +494,7 @@ void task_set_eet (task_t *task, int et)
         interTask = taskExec; 
     }
     interTask->eet = et;
-    interTask->ret = interTask->eet - interTask->processor_time;
+    interTask->ret = interTask->eet - interTask->running_time;
 }
 
 int task_get_eet(task_t *task)

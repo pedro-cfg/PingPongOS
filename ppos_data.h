@@ -29,10 +29,10 @@ typedef struct task_t
    unsigned int ret;
 
    unsigned int initial_total_time;
-   unsigned int initial_processor_time;
+   unsigned int initial_running_time;
 
    unsigned int total_time;
-   unsigned int processor_time;
+   unsigned int running_time;
 
    unsigned int activations;
    
