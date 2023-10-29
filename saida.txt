@@ -1,0 +1,119 @@
+main: inicio
+Loop iterations to microseconds = 274602
+Criando tarefa: UTask[ 0]
+Criando tarefa: UTask[ 1]
+Criando tarefa: UTask[ 2]
+Criando tarefa: UTask[ 3]
+Criando tarefa: UTask[ 4]
+[2]	UTask[ 0]: inicio (tempo de execucao 30)
+[7]	UTask[ 0]: interacao 7897232		5
+[12]	UTask[ 0]: interacao 7693785		10
+[17]	UTask[ 0]: interacao 7535647		15
+[22]	UTask[ 0]: interacao 7367049		20
+[27]	UTask[ 0]: interacao 7174701		25
+[32]	UTask[ 0]: interacao 6862298		30
+[32]	UTask[ 0]: fim
+
+Task 2 exit: execution time 32 ms, processor time 30 ms, 2 activations
+[32]	UTask[ 1]: inicio (tempo de execucao 50)
+[37]	UTask[ 1]: interacao 13520151		5
+[42]	UTask[ 1]: interacao 13218323		10
+[47]	UTask[ 1]: interacao 13033209		15
+[52]	UTask[ 1]: interacao 12880608		20
+[58]	UTask[ 1]: interacao 12745161		26
+[63]	UTask[ 1]: interacao 12617356		31
+[69]	UTask[ 1]: interacao 12450989		37
+[74]	UTask[ 1]: interacao 12178161		42
+[79]	UTask[ 1]: interacao 11894563		47
+[82]	UTask[ 1]: fim
+
+Task 3 exit: execution time 82 ms, processor time 50 ms, 3 activations
+[82]	UTask[ 2]: inicio (tempo de execucao 70)
+[87]	UTask[ 2]: interacao 18912536		5
+[92]	UTask[ 2]: interacao 18489915		10
+[97]	UTask[ 2]: interacao 18046783		15
+Criando NOVA tarefa: NEWTask[ 0]
+[100]	NEWTask[ 0]: inicio (tempo de execucao 15)
+[105]	NEWTask[ 0]: interacao 3734118		5
+[110]	NEWTask[ 0]: interacao 3305137		10
+[115]	NEWTask[ 0]: fim
+
+Task 7 exit: execution time 115 ms, processor time 15 ms, 1 activations
+[115]	UTask[ 2]: interacao 17777640		18
+[120]	UTask[ 2]: interacao 17332652		23
+[125]	UTask[ 2]: interacao 17003813		28
+[130]	UTask[ 2]: interacao 16611922		33
+[135]	UTask[ 2]: interacao 16375418		38
+[140]	UTask[ 2]: interacao 16000503		43
+[145]	UTask[ 2]: interacao 15623027		48
+[150]	UTask[ 2]: interacao 15398608		53
+[155]	UTask[ 2]: interacao 15084362		58
+[160]	UTask[ 2]: interacao 14631579		63
+[166]	UTask[ 2]: interacao 14429767		69
+[167]	UTask[ 2]: fim
+
+Task 4 exit: execution time 67 ms, processor time 70 ms, 4 activations
+[167]	UTask[ 3]: inicio (tempo de execucao 90)
+[172]	UTask[ 3]: interacao 24260778		5
+[177]	UTask[ 3]: interacao 23847428		10
+[182]	UTask[ 3]: interacao 23382707		15
+[187]	UTask[ 3]: interacao 22907243		20
+[192]	UTask[ 3]: interacao 22481098		25
+[197]	UTask[ 3]: interacao 22075604		30
+Criando NOVA tarefa: NEWTask[ 1]
+[200]	NEWTask[ 1]: inicio (tempo de execucao 15)
+[205]	NEWTask[ 1]: interacao 3602958		5
+[210]	NEWTask[ 1]: interacao 3140178		10
+[215]	NEWTask[ 1]: interacao 2785031		15
+[215]	NEWTask[ 1]: fim
+
+Task 8 exit: execution time 215 ms, processor time 15 ms, 1 activations
+[215]	UTask[ 3]: interacao 21820443		33
+[220]	UTask[ 3]: interacao 21579677		38
+[225]	UTask[ 3]: interacao 21135951		43
+[230]	UTask[ 3]: interacao 20714788		48
+[235]	UTask[ 3]: interacao 20307484		53
+[240]	UTask[ 3]: interacao 19834766		58
+[245]	UTask[ 3]: interacao 19419737		63
+[250]	UTask[ 3]: interacao 18995430		68
+[255]	UTask[ 3]: interacao 18607461		73
+[260]	UTask[ 3]: interacao 18196337		78
+[265]	UTask[ 3]: interacao 17868268		83
+[270]	UTask[ 3]: interacao 17492291		88
+[272]	UTask[ 3]: fim
+
+Task 5 exit: execution time 72 ms, processor time 90 ms, 5 activations
+[272]	UTask[ 4]: inicio (tempo de execucao 110)
+[277]	UTask[ 4]: interacao 29779246		5
+[282]	UTask[ 4]: interacao 29358128		10
+[287]	UTask[ 4]: interacao 28949376		15
+[292]	UTask[ 4]: interacao 28472008		20
+[297]	UTask[ 4]: interacao 28107361		25
+Criando NOVA tarefa: NEWTask[ 2]
+[300]	NEWTask[ 2]: inicio (tempo de execucao 15)
+[305]	NEWTask[ 2]: interacao 3669080		5
+[310]	NEWTask[ 2]: interacao 3220766		10
+[315]	NEWTask[ 2]: fim
+
+Task 9 exit: execution time 315 ms, processor time 15 ms, 1 activations
+[315]	UTask[ 4]: interacao 27866172		28
+[320]	UTask[ 4]: interacao 27477906		33
+[325]	UTask[ 4]: interacao 27056341		38
+[330]	UTask[ 4]: interacao 26640439		43
+[335]	UTask[ 4]: interacao 26194192		48
+[340]	UTask[ 4]: interacao 25805679		53
+[345]	UTask[ 4]: interacao 25378821		58
+[350]	UTask[ 4]: interacao 24985779		63
+[355]	UTask[ 4]: interacao 24553945		68
+[360]	UTask[ 4]: interacao 24120417		73
+[365]	UTask[ 4]: interacao 23801223		78
+[370]	UTask[ 4]: interacao 23399307		83
+[375]	UTask[ 4]: interacao 22910547		88
+[380]	UTask[ 4]: interacao 22461204		93
+[385]	UTask[ 4]: interacao 22083843		98
+[390]	UTask[ 4]: interacao 21550005		103
+[395]	UTask[ 4]: interacao 21055774		108
+[397]	UTask[ 4]: fim
+
+Task 6 exit: execution time 97 ms, processor time 110 ms, 7 activations
+main: fim

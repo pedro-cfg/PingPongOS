@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <ucontext.h>		// biblioteca POSIX de trocas de contexto
 #include "queue.h"		// biblioteca de filas genéricas
+#include <time.h>
+#include <string.h>
 
 // Estrutura que define um Task Control Block (TCB)
 typedef struct task_t
@@ -29,7 +31,6 @@ typedef struct task_t
    unsigned int ret;
 
    unsigned int initial_total_time;
-   unsigned int initial_running_time;
 
    unsigned int total_time;
    unsigned int running_time;
@@ -76,6 +77,15 @@ typedef struct {
     
     unsigned char active;
 } mqueue_t ;
+
+//Define os tempos de execução e restantes de uma tarefa
+void task_set_eet (task_t *task, int et);
+
+//Retorna o tempo de execução de uma tarefa
+int task_get_eet(task_t *task);
+
+//Retorna o tempo restante de uma tarefa
+int task_get_ret(task_t *task);
 
 #endif
 

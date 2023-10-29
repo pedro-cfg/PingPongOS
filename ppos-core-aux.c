@@ -77,6 +77,7 @@ void after_ppos_init () {
 
 void before_task_create (task_t *task ) {
     // put your customization here
+    task->initial_total_time = systime();
     if(task != taskMain && task != taskDisp)
         task_set_eet(task,99999);
 #ifdef DEBUG
@@ -86,7 +87,6 @@ void before_task_create (task_t *task ) {
 
 void after_task_create (task_t *task ) {
     // put your customization here
-    
     quantum = MAX_TICKS;
 
 #ifdef DEBUG
@@ -97,7 +97,7 @@ void after_task_create (task_t *task ) {
 void before_task_exit () {
     // put your customization here
     taskExec->total_time = systemTime - taskExec->initial_total_time;
-    task_set_eet(taskExec,taskExec->eet);;
+    task_set_eet(taskExec,taskExec->eet);
     printf("\nTask %d exit: execution time %u ms, processor time %u ms, %d activations\n",taskExec->id,taskExec->total_time,taskExec->running_time,taskExec->activations);
 #ifdef DEBUG
     printf("\ntask_exit - BEFORE - [%d]", taskExec->id);
@@ -468,7 +468,10 @@ task_t * scheduler() {
         task_t* task = initial_task;
         unsigned int shortest_time = shortest_task->ret;
         if(task->next == NULL)
+        {
+            task->activations = task->activations + 1;
             return task;
+        }
         task = task->next;
         while(task != initial_task)
         {

@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <string.h>
 
 // Interface do núcleo para as aplicações
 #ifndef __PPOS__
@@ -103,15 +101,6 @@ void task_setprio (task_t *task, int prio) ;
 
 // retorna a prioridade estática de uma tarefa (ou a tarefa atual)
 int task_getprio (task_t *task) ;
-
-//Define os tempos de execução e restantes de uma tarefa
-void task_set_eet (task_t *task, int et);
-
-//Retorna o tempo de execução de uma tarefa
-int task_get_eet(task_t *task);
-
-//Retorna o tempo restante de uma tarefa
-int task_get_ret(task_t *task);
 
 // retorna a proxima tarefa a ser executada conforme a politica de escalonamento
 task_t * scheduler() ;
