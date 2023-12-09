@@ -14,8 +14,20 @@
 // estrutura que representa um disco no sistema operacional
 typedef struct
 {
-  
+  int current_position;
+  int total_blocks;
+  int initial_time;
+  int total_time;
 } disk_t ;
+
+typedef struct requisition
+{
+  struct requisition* nex;
+  struct requisition* pre;
+  int id;
+  task_t* task;
+  int block;
+} requisition;
 
 // inicializacao do gerente de disco
 // retorna -1 em erro ou 0 em sucesso
@@ -31,6 +43,12 @@ int disk_block_write (int block, void *buffer) ;
 
 static void signal_handler(int signum);
 
+requisition* createRequisition(int block, task_t* task);
+void deleteRequisition(requisition* r);
+
 void first_come_first_served();
+
+int get_total_time();
+int get_total_blocks();
 
 #endif

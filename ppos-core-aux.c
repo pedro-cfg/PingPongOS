@@ -1,6 +1,7 @@
 #include "ppos.h"
 #include "ppos-core-globals.h"
 #include "disk.h"
+#include "ppos_disk.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,6 +23,13 @@ struct itimerval timer;
 int quantum = MAX_TICKS;
 
 // ****************************************************************************
+
+void print_disk_info()
+{
+    int time = get_total_time();
+    int blocks = get_total_blocks();
+    printf("\nO Disco levou %d milisegundos e percorreu %d blocos\n", time, blocks);
+}
 
 static void tick (int signum) {
     if(taskExec != taskDisp)
@@ -100,6 +108,10 @@ void before_task_exit () {
     taskExec->total_time = systemTime - taskExec->initial_total_time;
     task_set_eet(taskExec,taskExec->eet);
     printf("\nTask %d exit: execution time %u ms, processor time %u ms, %d activations\n",taskExec->id,taskExec->total_time,taskExec->running_time,taskExec->activations);
+    if(taskExec == taskMain)
+    {
+        print_disk_info();
+    }
 #ifdef DEBUG
     printf("\ntask_exit - BEFORE - [%d]", taskExec->id);
 #endif
