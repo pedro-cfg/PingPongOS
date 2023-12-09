@@ -1,5 +1,6 @@
 #include "ppos.h"
 #include "ppos-core-globals.h"
+#include "disk.h"
 
 #include <stdio.h>
 #include <stdlib.h>
